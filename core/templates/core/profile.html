@@ -1,0 +1,30 @@
+{% extends 'core/base.html' %}
+{% block content %}
+<h2>👤 Профиль пользователя</h2>
+<div class="card mb-4">
+    <div class="card-body">
+        <p><strong>Имя пользователя:</strong> {{ user.username }}</p>
+        <p><strong>Email:</strong> {{ user.email }}</p>
+        <a href="{% url 'edit_profile' %}" class="btn btn-sm btn-outline-primary">✏️ Редактировать профиль</a>
+    </div>
+</div>
+
+<h3>🎮 Мои игры</h3>
+<div class="row">
+    {% for game in games %}
+    <div class="col-md-4">
+        <div class="card mb-3">
+            <div class="card-body">
+                <h5 class="card-title">{{ game.title }}</h5>
+                <p class="card-text">{{ game.description|truncatewords:20 }}</p>
+                <p><strong>Жанр:</strong> {{ game.genre }}</p>
+                <p><strong>Дата релиза:</strong> {{ game.release_date }}</p>
+                <a href="{% url 'edit_game' game.id %}" class="btn btn-sm btn-warning">✏️ Редактировать игру</a>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <p>У вас пока нет добавленных игр.</p>
+    {% endfor %}
+</div>
+{% endblock %}

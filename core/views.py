@@ -48,6 +48,15 @@ def edit_game_view(request, game_id):
         return redirect('home')
     return render(request, 'core/edit_game.html', {'form': form})
 
+# профиль
+
+@login_required
+def profile_view(request):
+    user = request.user
+    games = Game.objects.filter(owner=user)
+    return render(request, 'core/profile.html', {'user': user, 'games': games})
+
+
 # редактирование профиля
 
 @login_required

@@ -1,32 +1,61 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Game Library</title>
+    <title>{% block title %}Game Library{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Дополнительные стили (опционально) -->
+    <style>
+        body.dark-mode {
+            background-color: #121212;
+            color: #f0f0f0;
+        }
+        .navbar-dark-mode {
+            background-color: #1f1f1f;
+        }
+    </style>
 </head>
-<body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<body class="{% if request.COOKIES.theme == 'dark' %}dark-mode{% endif %}">
+
+<nav class="navbar navbar-expand-lg {% if request.COOKIES.theme == 'dark' %}navbar-dark-mode{% else %}navbar-dark bg-dark{% endif %}">
     <div class="container-fluid">
         <a class="navbar-brand" href="{% url 'home' %}">🎮 Game Library</a>
-        <div class="collapse navbar-collapse">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
                 {% if user.is_authenticated %}
-                    <li class="nav-item"><a class="nav-link" href="{% url 'add_game' %}">➕ Add Game</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'add_game' %}">➕ Добавить игру</a></li>
                     <li class="nav-item"><a class="nav-link" href="{% url 'profile' %}">👤 Профиль</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'edit_profile' %}">👤 Edit Profile</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">🚪 Logout</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'edit_profile' %}">⚙️ Настройки</a></li>
+                    <li class="nav-item">
+                    <form method="post" action="{% url 'logout' %}" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-link nav-link" style="padding:0;">🚪 Выйти</button>
+                    </form>
+                    </li>
                 {% else %}
-                    <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">🔐 Login</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'register' %}">📝 Register</a></li>
-                    
+                    <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">🔐 Вход</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'register' %}">📝 Регистрация</a></li>
                 {% endif %}
             </ul>
         </div>
     </div>
 </nav>
+
 <div class="container mt-4">
-    {% block content %}{% endblock %}
+    {% block content %}
+    <!-- Контент страницы -->
+    {% endblock %}
 </div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>

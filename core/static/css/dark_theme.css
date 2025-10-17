@@ -33,6 +33,43 @@ body {
     box-shadow: 0 0 15px rgba(0, 255, 204, 0.3);
     border-color: #00ffcc;
 }
+.card-title {
+    color: #ffffff;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+.card-text {
+    color: #cccccc;
+    font-size: 1rem;
+}
+.card .text-muted {
+    color: #aaaaaa !important;
+    font-size: 0.95rem;
+}
+.card-body {
+    background-color: rgba(30, 30, 30, 0.95);
+    padding: 1rem;
+}
+.card-img-top {
+    filter: brightness(0.85);
+}
+
+/* Формы */
+.form-label {
+    color: #cccccc;
+}
+.form-control {
+    background-color: #2a2a2a;
+    color: #f0f0f0;
+    border: 1px solid #555;
+}
+.form-control::placeholder {
+    color: #888;
+}
+.form-control:focus {
+    border-color: #00ffcc;
+    box-shadow: 0 0 0 0.2rem rgba(0, 255, 204, 0.25);
+}
 
 /* Кнопки */
 .btn-success {
@@ -50,17 +87,6 @@ body {
 .btn-outline-info:hover {
     background-color: #00ffcc;
     color: #121212;
-}
-
-/* Формы */
-.form-control {
-    background-color: #1e1e1e;
-    color: #f0f0f0;
-    border: 1px solid #444;
-}
-.form-control:focus {
-    border-color: #00ffcc;
-    box-shadow: 0 0 0 0.2rem rgba(0, 255, 204, 0.25);
 }
 
 /* Сообщения */

@@ -9,8 +9,13 @@ body {
     background-color: #ffffff;
     border-bottom: 1px solid #ccc;
 }
-.navbar-brand, .nav-link {
+.navbar-brand {
     color: #212529 !important;
+    font-weight: bold;
+}
+.nav-link {
+    color: #212529 !important;
+    font-weight: 500;
 }
 .nav-link:hover {
     color: #00aa88 !important;
@@ -27,6 +32,43 @@ body {
     transform: scale(1.03);
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
     border-color: #00ccaa;
+}
+.card-title {
+    color: #212529;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+.card-text {
+    color: #444;
+    font-size: 1rem;
+}
+.card .text-muted {
+    color: #666 !important;
+    font-size: 0.95rem;
+}
+.card-body {
+    background-color: rgba(255, 255, 255, 0.95);
+    padding: 1rem;
+}
+.card-img-top {
+    filter: brightness(1);
+}
+
+/* Формы */
+.form-label {
+    color: #212529;
+}
+.form-control {
+    background-color: #ffffff;
+    color: #212529;
+    border: 1px solid #ccc;
+}
+.form-control::placeholder {
+    color: #999;
+}
+.form-control:focus {
+    border-color: #00ccaa;
+    box-shadow: 0 0 0 0.2rem rgba(0, 204, 170, 0.25);
 }
 
 /* Кнопки */
@@ -45,17 +87,6 @@ body {
 .btn-outline-info:hover {
     background-color: #00aa88;
     color: #fff;
-}
-
-/* Формы */
-.form-control {
-    background-color: #ffffff;
-    color: #212529;
-    border: 1px solid #ccc;
-}
-.form-control:focus {
-    border-color: #00ccaa;
-    box-shadow: 0 0 0 0.2rem rgba(0, 204, 170, 0.25);
 }
 
 /* Сообщения */

@@ -1,5 +1,7 @@
 from django.urls import path
+from django.conf import settings
 from django.contrib.auth import views as auth_views
+from django.conf.urls.static import static
 from . import views
 
 urlpatterns = [
@@ -11,5 +13,4 @@ urlpatterns = [
     path('edit/<int:game_id>/', views.edit_game_view, name='edit_game'),
     path('profile/edit/', views.edit_profile_view, name='edit_profile'),
     path('profile/', views.profile_view, name='profile'),
-
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

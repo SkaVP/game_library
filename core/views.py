@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from .models import Game
@@ -39,14 +39,24 @@ def add_game_view(request):
 
 # редактирование игры
 
+# @login_required
+# def edit_game_view(request, game_id):
+#     game = Game.objects.get(id=game_id, owner=request.user)
+#     form = GameForm(request.POST or None, request.FILES, instance=game)
+#     if form.is_valid():
+#         form.save()
+#         return redirect('home')
+#     return render(request, 'core/edit_game.html', {'form': form})
+
 @login_required
 def edit_game_view(request, game_id):
-    game = Game.objects.get(id=game_id, owner=request.user)
-    form = GameForm(request.POST or None, instance=game)
+    game = get_object_or_404(Game, id=game_id, owner=request.user)
+    form = GameForm(request.POST or None, request.FILES or None, instance=game)
     if form.is_valid():
         form.save()
         return redirect('home')
-    return render(request, 'core/edit_game.html', {'form': form})
+    return render(request, 'core/edit_game.html', {'form': form, 'game': game})
+
 
 # профиль
 

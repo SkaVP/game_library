@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from .models import Game
 from .forms import RegisterForm, GameForm, ProfileForm
 # регистрация
@@ -41,22 +42,33 @@ def add_game_view(request):
 
 # @login_required
 # def edit_game_view(request, game_id):
-#     game = Game.objects.get(id=game_id, owner=request.user)
-#     form = GameForm(request.POST or None, request.FILES, instance=game)
+#     game = get_object_or_404(Game, id=game_id, owner=request.user)
+#     form = GameForm(request.POST or None, request.FILES or None, instance=game)
 #     if form.is_valid():
 #         form.save()
 #         return redirect('home')
-#     return render(request, 'core/edit_game.html', {'form': form})
+#     return render(request, 'core/edit_game.html', {'form': form, 'game': game})
 
-@login_required
 def edit_game_view(request, game_id):
     game = get_object_or_404(Game, id=game_id, owner=request.user)
-    form = GameForm(request.POST or None, request.FILES or None, instance=game)
-    if form.is_valid():
-        form.save()
-        return redirect('home')
-    return render(request, 'core/edit_game.html', {'form': form, 'game': game})
 
+    if request.method == 'POST':
+        if 'delete_cover' in request.POST:
+            game.cover.delete(save=False)
+            game.cover = None
+            game.save()
+            messages.success(request, "🗑️ Обложка удалена.")
+            return redirect('edit_game', game_id=game.id)
+
+        form = GameForm(request.POST, request.FILES, instance=game)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "✅ Игра успешно обновлена.")
+            return redirect('home')
+    else:
+        form = GameForm(instance=game)
+
+    return render(request, 'core/edit_game.html', {'form': form, 'game': game})
 
 # профиль
 

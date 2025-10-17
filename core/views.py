@@ -11,11 +11,13 @@ def register_view(request):
         form = RegisterForm(request.POST)
         if form.is_valid():
             user = form.save()
-            login(request, user)
+            login(request, user)  # автоматический вход после регистрации
+            messages.success(request, "✅ Регистрация прошла успешно!")
             return redirect('home')
     else:
         form = RegisterForm()
     return render(request, 'core/register.html', {'form': form})
+
 
 # Главная
 

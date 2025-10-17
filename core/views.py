@@ -25,29 +25,22 @@ def home_view(request):
 
 # добавление игры
 
+
 @login_required
 def add_game_view(request):
     if request.method == 'POST':
-        form = GameForm(request.POST)
+        form = GameForm(request.POST, request.FILES)
         if form.is_valid():
             game = form.save(commit=False)
-            game.owner = request.user
+            game.owner = request.user  # если есть поле owner
             game.save()
+            messages.success(request, "✅ Игра успешно добавлена.")
             return redirect('home')
     else:
         form = GameForm()
     return render(request, 'core/add_game.html', {'form': form})
 
 # редактирование игры
-
-# @login_required
-# def edit_game_view(request, game_id):
-#     game = get_object_or_404(Game, id=game_id, owner=request.user)
-#     form = GameForm(request.POST or None, request.FILES or None, instance=game)
-#     if form.is_valid():
-#         form.save()
-#         return redirect('home')
-#     return render(request, 'core/edit_game.html', {'form': form, 'game': game})
 
 def edit_game_view(request, game_id):
     game = get_object_or_404(Game, id=game_id, owner=request.user)

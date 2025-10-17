@@ -3,30 +3,74 @@
 
 {% block content %}
 <div class="container mt-4">
-    <h2>➕ Добавить игру</h2>
+    <h2 class="mb-4 text-center">➕ Добавить игру</h2>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-success">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+
+    {% if form.errors %}
+        <div class="alert alert-danger">
+            <ul class="mb-0">
+                {% for field in form %}
+                    {% for error in field.errors %}
+                        <li><strong>{{ field.label }}:</strong> {{ error }}</li>
+                    {% endfor %}
+                {% endfor %}
+                {% for error in form.non_field_errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+
     <form method="post" enctype="multipart/form-data" class="mt-3">
         {% csrf_token %}
+
         <div class="mb-3">
             <label for="id_title" class="form-label">Название</label>
-            {{ form.title|add_class:"form-control" }}
+            {{ form.title }}
         </div>
+
+        <div class="mb-3">
+            <label for="id_description" class="form-label">Описание</label>
+            {{ form.description }}
+        </div>
+
         <div class="mb-3">
             <label for="id_genre" class="form-label">Жанр</label>
-            {{ form.genre|add_class:"form-control" }}
+            {{ form.genre }}
         </div>
-        <div class="mb-3">
-            <label for="id_platform" class="form-label">Платформа</label>
-            {{ form.platform|add_class:"form-control" }}
-        </div>
+
         <div class="mb-3">
             <label for="id_release_date" class="form-label">Дата релиза</label>
-            {{ form.release_date|add_class:"form-control" }}
+            {{ form.release_date }}
         </div>
+
         <div class="mb-3">
             <label for="id_cover" class="form-label">Обложка</label>
-            {{ form.cover|add_class:"form-control" }}
+            {{ form.cover }}
+            <div id="cover-preview" class="mt-2"></div>
         </div>
-        <button type="submit" class="btn btn-primary">💾 Сохранить</button>
+
+        <button type="submit" class="btn btn-primary w-100">💾 Сохранить игру</button>
     </form>
 </div>
+
+<script>
+document.getElementById('id_cover').addEventListener('change', function(event) {
+    const previewContainer = document.getElementById('cover-preview');
+    previewContainer.innerHTML = '';
+    const file = event.target.files[0];
+    if (file) {
+        const img = document.createElement('img');
+        img.src = URL.createObjectURL(file);
+        img.className = 'img-fluid mt-2';
+        img.style.maxHeight = '200px';
+        previewContainer.appendChild(img);
+    }
+});
+</script>
 {% endblock %}

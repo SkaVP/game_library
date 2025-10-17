@@ -1,23 +1,29 @@
 {% extends 'core/base.html' %}
+{% block title %}Главная{% endblock %}
+
 {% block content %}
-<h2>🎮 Все игры</h2>
-<div class="row">
-    {% for game in games %}
-    <div class="col-md-4">
-        <div class="card mb-3">
-            <div class="card-body">
-                <h5 class="card-title">{{ game.title }}</h5>
-                <p class="card-text">{{ game.description|truncatewords:20 }}</p>
-                <p><strong>Жанр:</strong> {{ game.genre }}</p>
-                <p><strong>Дата релиза:</strong> {{ game.release_date }}</p>
-                {% if game.owner == user %}
-                    <a href="{% url 'edit_game' game.id %}" class="btn btn-sm btn-primary">✏️ Редактировать</a>
+<div class="container mt-4">
+    <h2>🎮 Все игры</h2>
+    <div class="row">
+        {% for game in games %}
+        <div class="col-md-4">
+            <div class="card mb-4 shadow-sm">
+                {% if game.cover %}
+                    <img src="{{ game.cover.url }}" class="card-img-top" alt="Обложка {{ game.title }}" style="max-height: 200px; object-fit: cover;">
+                {% else %}
+                    <div class="bg-secondary text-white text-center py-5">Нет обложки</div>
                 {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ game.title }}</h5>
+                    <p class="card-text"><strong>Жанр:</strong> {{ game.genre }}</p>
+                    <p class="card-text"><strong>Дата релиза:</strong> {{ game.release_date }}</p>
+                    <a href="{% url 'edit_game' game.id %}" class="btn btn-sm btn-outline-primary">✏️ Редактировать</a>
+                </div>
             </div>
         </div>
+        {% empty %}
+        <p>Нет доступных игр.</p>
+        {% endfor %}
     </div>
-    {% empty %}
-    <p>Нет добавленных игр.</p>
-    {% endfor %}
 </div>
 {% endblock %}

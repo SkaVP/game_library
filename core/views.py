@@ -20,7 +20,7 @@ def register_view(request):
 # Главная
 
 def home_view(request):
-    games = Game.objects.all()
+    games = Game.objects.all().order_by('-release_date')
     return render(request, 'core/home.html', {'games': games})
 
 # добавление игры

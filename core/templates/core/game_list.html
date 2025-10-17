@@ -1,0 +1,30 @@
+{% extends 'core/base.html' %}
+{% block title %}Все игры{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>🎮 Все игры</h2>
+
+    {% if games %}
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            {% for game in games %}
+                <div class="col">
+                    <div class="card h-100">
+                        {% if game.cover %}
+                            <img src="{{ game.cover.url }}" class="card-img-top" alt="{{ game.title }}">
+                        {% endif %}
+                        <div class="card-body">
+                            <h5 class="card-title">{{ game.title }}</h5>
+                            <p class="card-text">{{ game.description|truncatechars:120 }}</p>
+                            <p class="text-muted">Жанр: {{ game.genre }}</p>
+                            <p class="text-muted">Дата релиза: {{ game.release_date }}</p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>Нет добавленных игр.</p>
+    {% endif %}
+</div>
+{% endblock %}

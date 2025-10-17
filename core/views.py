@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import Game
 from .forms import RegisterForm, GameForm, ProfileForm
+
 # регистрация
 
 def register_view(request):
@@ -41,6 +42,12 @@ def add_game_view(request):
     else:
         form = GameForm()
     return render(request, 'core/add_game.html', {'form': form})
+
+# список игр
+
+def game_list_view(request):
+    games = Game.objects.all().order_by('-release_date')  # или по title
+    return render(request, 'core/game_list.html', {'games': games})
 
 # страница игры
 

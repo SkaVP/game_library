@@ -1,94 +1,51 @@
 <!DOCTYPE html>
 <html lang="ru">
+{% load static %}
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}Game Library{% endblock %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- Bootstrap 5 -->
+    <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- CSS-переменные для тем -->
-    <style>
-        :root {
-            --bg-color: #ffffff;
-            --text-color: #1a1a1a;
-            --card-bg: #f8f9fa;
-        }
-
-        body.light-theme {
-            --bg-color: #ffffff;
-            --text-color: #1a1a1a;
-            --card-bg: #f8f9fa;
-        }
-
-        body.dark-theme {
-            --bg-color: #121212;
-            --text-color: #f0f0f0;
-            --card-bg: #2c2c2c;
-        }
-
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-        }
-
-        .card {
-            background-color: var(--card-bg);
-            color: var(--text-color);
-        }
-
-        .navbar, .dropdown-menu {
-            background-color: var(--card-bg);
-        }
-
-        .btn-theme {
-            border: none;
-            background: transparent;
-            font-size: 1.2rem;
-        }
-    </style>
+    <!-- Темы -->
+    <link id="theme-style" rel="stylesheet" href="{% static 'css/dark_theme.css' %}">
 </head>
-<body class="light-theme">
-
-<!-- 🔝 Навбар -->
-<nav class="navbar navbar-expand-lg shadow-sm mb-4">
-    <div class="container">
+<body>
+<nav class="navbar navbar-expand-lg border-bottom">
+    <div class="container-fluid">
         <a class="navbar-brand fw-bold" href="{% url 'home' %}">🎮 Game Library</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>
         </button>
 
-        <div class="collapse navbar-collapse justify-content-end" id="navbarContent">
-            <ul class="navbar-nav align-items-center">
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto align-items-center">
+                <li class="nav-item"><a class="nav-link" href="{% url 'game_list' %}">🕹️ Все игры</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'add_game' %}">➕ Добавить игру</a></li>
+
                 {% if user.is_authenticated %}
-                    <li class="nav-item dropdown me-2">
-                        <a class="btn btn-outline-secondary btn-sm dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            👤 {{ user.username }}
+                    <li class="nav-item">
+                        <a class="nav-link text-info fw-bold" href="{% url 'profile' %}">
+                            👑 {{ user.username }}
                         </a>
-                        <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" href="{% url 'profile' %}">Профиль</a></li>
-                            <li><a class="dropdown-item" href="{% url 'add_game' %}">➕ Добавить игру</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li>
-                                <form method="post" action="{% url 'logout' %}" class="d-inline">
-                                    {% csrf_token %}
-                                    <button type="submit" class="dropdown-item text-danger">Выйти</button>
-                                </form>
-                            </li>
-                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <form method="post" action="{% url 'logout' %}" class="d-inline">
+                            {% csrf_token %}
+                            <button type="submit" class="nav-link btn btn-link text-decoration-none">
+                                🚪 Выйти
+                            </button>
+                        </form>
                     </li>
                 {% else %}
-                    <li class="nav-item me-2">
-                        <a href="{% url 'login' %}" class="btn btn-outline-primary btn-sm">Вход</a>
-                    </li>
-                    <li class="nav-item me-2">
-                        <a href="{% url 'register' %}" class="btn btn-outline-success btn-sm">Регистрация</a>
-                    </li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">🔐 Войти</a></li>
                 {% endif %}
+
                 <li class="nav-item">
-                    <button id="theme-toggle" class="btn-theme" title="Переключить тему">
-                        <span id="theme-icon">🌞</span>
+                    <button id="theme-toggle" class="btn btn-sm btn-outline-info ms-2">
+                        <span id="theme-icon" class="theme-icon">🌙</span> Тема
                     </button>
                 </li>
             </ul>
@@ -96,47 +53,48 @@
     </div>
 </nav>
 
-<!-- 💬 Flash-сообщения -->
-<div class="container">
+<main class="container mt-4">
     {% if messages %}
         {% for message in messages %}
             <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
                 {{ message }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Закрыть"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
         {% endfor %}
     {% endif %}
-</div>
 
-<!-- 📦 Контент -->
-{% block content %}
-{% endblock %}
+    {% block content %}{% endblock %}
+</main>
 
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
-<!-- 🌗 Переключение темы -->
+<!-- Переключатель темы -->
 <script>
-const toggleBtn = document.getElementById('theme-toggle');
-const icon = document.getElementById('theme-icon');
-const body = document.body;
+const themeToggle = document.getElementById('theme-toggle');
+const themeLink = document.getElementById('theme-style');
+const themeIcon = document.getElementById('theme-icon');
 
-function applyTheme(theme) {
-    body.classList.remove('light-theme', 'dark-theme');
-    body.classList.add(theme);
-    icon.textContent = theme === 'dark-theme' ? '🌙' : '🌞';
+function setTheme(theme) {
+    themeLink.href = theme === 'light'
+        ? '{% static "css/light_theme.css" %}'
+        : '{% static "css/dark_theme.css" %}';
+    themeIcon.textContent = theme === 'light' ? '🌞' : '🌙';
     localStorage.setItem('theme', theme);
 }
 
-toggleBtn.addEventListener('click', () => {
-    const current = body.classList.contains('dark-theme') ? 'dark-theme' : 'light-theme';
-    const next = current === 'dark-theme' ? 'light-theme' : 'dark-theme';
-    applyTheme(next);
+themeToggle.addEventListener('click', () => {
+    const current = localStorage.getItem('theme') || 'dark';
+    const next = current === 'dark' ? 'light' : 'dark';
+    setTheme(next);
+
+    themeIcon.classList.add('spin');
+    setTimeout(() => themeIcon.classList.remove('spin'), 500);
 });
 
 window.addEventListener('DOMContentLoaded', () => {
-    const saved = localStorage.getItem('theme') || 'light-theme';
-    applyTheme(saved);
+    const saved = localStorage.getItem('theme') || 'dark';
+    setTheme(saved);
 });
 </script>
 </body>

@@ -1,0 +1,30 @@
+{% extends 'core/base.html' %}
+{% block title %}{{ game.title }}{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-5">
+            {% if game.cover %}
+                <img src="{{ game.cover.url }}" alt="Обложка {{ game.title }}" class="img-fluid rounded shadow-sm">
+            {% else %}
+                <div class="bg-secondary text-white text-center d-flex align-items-center justify-content-center rounded" style="height: 300px;">
+                    <span>Нет обложки</span>
+                </div>
+            {% endif %}
+        </div>
+        <div class="col-md-7">
+            <h2>{{ game.title }}</h2>
+            <p><strong>Жанр:</strong> {{ game.genre }}</p>
+            <p><strong>Дата релиза:</strong> {{ game.release_date }}</p>
+            <p><strong>Описание:</strong></p>
+            <p>{{ game.description }}</p>
+
+            {% if request.user == game.owner %}
+                <a href="{% url 'edit_game' game.id %}" class="btn btn-outline-primary">✏️ Редактировать</a>
+            {% endif %}
+            <a href="{% url 'home' %}" class="btn btn-secondary ms-2">← Назад</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

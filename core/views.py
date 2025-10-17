@@ -42,6 +42,12 @@ def add_game_view(request):
         form = GameForm()
     return render(request, 'core/add_game.html', {'form': form})
 
+# страница игры
+
+def game_detail_view(request, game_id):
+    game = get_object_or_404(Game, id=game_id)
+    return render(request, 'core/game_detail.html', {'game': game})
+
 # редактирование игры
 
 def edit_game_view(request, game_id):

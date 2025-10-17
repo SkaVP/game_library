@@ -27,6 +27,7 @@
                     </div>
                 {% endif %}
                 <div class="card-body d-flex flex-column">
+                    <a href="{% url 'game_detail' game.id %}" class="stretched-link"></a>
                     <h5 class="card-title">{{ game.title }}</h5>
                     <p class="card-text"><strong>Жанр:</strong> {{ game.genre }}</p>
                     <p class="card-text"><strong>Дата релиза:</strong> {{ game.release_date }}</p>

@@ -34,10 +34,10 @@
                     <li class="nav-item"><a class="nav-link" href="{% url 'profile' %}">👤 Профиль</a></li>
                     <li class="nav-item"><a class="nav-link" href="{% url 'edit_profile' %}">⚙️ Настройки</a></li>
                     <li class="nav-item">
-                    <form method="post" action="{% url 'logout' %}" style="display:inline;">
-                        {% csrf_token %}
-                        <button type="submit" class="btn btn-link nav-link" style="padding:0;">🚪 Выйти</button>
-                    </form>
+                        <form method="post" action="{% url 'logout' %}" class="d-inline">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-link nav-link px-0" style="vertical-align: middle;">🚪 Выйти</button>
+                        </form>
                     </li>
                 {% else %}
                     <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">🔐 Вход</a></li>

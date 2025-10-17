@@ -16,5 +16,6 @@ urlpatterns = [
     path('profile/', views.profile_view, name='profile'),
     path('game/<int:game_id>/', views.game_detail_view, name='game_detail'),
     path('games/', views.game_list_view, name='game_list'),
+    path('my-games/', views.my_games_view, name='my_games'),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

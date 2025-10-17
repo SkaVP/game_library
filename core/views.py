@@ -28,7 +28,6 @@ def home_view(request):
 
 # добавление игры
 
-
 @login_required
 def add_game_view(request):
     if request.method == 'POST':
@@ -96,3 +95,10 @@ def edit_profile_view(request):
         form.save()
         return redirect('home')
     return render(request, 'core/edit_profile.html', {'form': form})
+
+# игры пользователя
+
+@login_required
+def my_games_view(request):
+    my_games = Game.objects.filter(owner=request.user)
+    return render(request, 'core/my_games.html', {'my_games': my_games})

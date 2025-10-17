@@ -23,6 +23,7 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto align-items-center">
                 <li class="nav-item"><a class="nav-link" href="{% url 'game_list' %}">🕹️ Все игры</a></li>
+                <a class="nav-link" href="{% url 'my_games' %}">📁 Мои игры</a>
                 <li class="nav-item"><a class="nav-link" href="{% url 'add_game' %}">➕ Добавить игру</a></li>
 
                 {% if user.is_authenticated %}

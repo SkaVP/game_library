@@ -1,13 +1,13 @@
 {% extends 'core/base.html' %}
-{% block title %}Все игры{% endblock %}
+{% block title %}Мои игры{% endblock %}
 
 {% block content %}
 <div class="container mt-4">
-    <h2>🎮 Все игры</h2>
+    <h2>🎮 Мои игры</h2>
 
-    {% if games %}
+    {% if my_games %}
         <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-            {% for game in games %}
+            {% for game in my_games %}
                 <div class="col">
                     <a href="{% url 'game_detail' game.pk %}" class="text-decoration-none text-reset">
                         <div class="card h-100">
@@ -26,7 +26,7 @@
             {% endfor %}
         </div>
     {% else %}
-        <p>Нет добавленных игр.</p>
+        <p>Вы ещё не добавили ни одной игры.</p>
     {% endif %}
 </div>
 {% endblock %}

@@ -3,14 +3,38 @@
 
 {% block content %}
 <div class="container mt-4">
-    <h2>🎮 Все игры</h2>
+    <h2 class="mb-4">🎮 Все игры</h2>
+
+    <form method="get" class="row g-3 mb-4">
+        <div class="col-md-6">
+            <select name="genre" class="form-select" onchange="this.form.submit()">
+                <option value="">Все жанры</option>
+                <option value="RPG" {% if selected_genre == 'RPG' %}selected{% endif %}>RPG</option>
+                <option value="Shooter" {% if selected_genre == 'Shooter' %}selected{% endif %}>Шутер</option>
+                <option value="Strategy" {% if selected_genre == 'Strategy' %}selected{% endif %}>Стратегия</option>
+                <option value="Adventure" {% if selected_genre == 'Adventure' %}selected{% endif %}>Приключения</option>
+                <option value="Puzzle" {% if selected_genre == 'Puzzle' %}selected{% endif %}>Головоломка</option>
+                <option value="Sports" {% if selected_genre == 'Sports' %}selected{% endif %}>Спорт</option>
+                <option value="Simulation" {% if selected_genre == 'Simulation' %}selected{% endif %}>Симулятор</option>
+                <option value="Other" {% if selected_genre == 'Other' %}selected{% endif %}>Другое</option>
+            </select>
+        </div>
+
+        <div class="col-md-6">
+            <select name="sort" class="form-select" onchange="this.form.submit()">
+                <option value="">Без сортировки</option>
+                <option value="title" {% if selected_sort == 'title' %}selected{% endif %}>По названию</option>
+                <option value="date" {% if selected_sort == 'date' %}selected{% endif %}>По дате релиза</option>
+            </select>
+        </div>
+    </form>
 
     {% if games %}
         <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
             {% for game in games %}
                 <div class="col">
                     <a href="{% url 'game_detail' game.pk %}" class="text-decoration-none text-reset">
-                        <div class="card h-100">
+                        <div class="card h-100 shadow-sm">
                             {% if game.cover %}
                                 <img src="{{ game.cover.url }}" class="card-img-top" alt="{{ game.title }}">
                             {% endif %}
@@ -26,7 +50,7 @@
             {% endfor %}
         </div>
     {% else %}
-        <p>Нет добавленных игр.</p>
+        <p class="text-muted">Нет добавленных игр.</p>
     {% endif %}
 </div>
 {% endblock %}

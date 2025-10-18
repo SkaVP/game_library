@@ -45,8 +45,24 @@ def add_game_view(request):
 # список игр
 
 def game_list_view(request):
-    games = Game.objects.all().order_by('-release_date')  # или по title
-    return render(request, 'core/game_list.html', {'games': games})
+    genre = request.GET.get('genre')
+    sort = request.GET.get('sort')
+
+    games = Game.objects.all()
+
+    if genre:
+        games = games.filter(genre=genre)
+
+    if sort == 'title':
+        games = games.order_by('title')
+    elif sort == 'date':
+        games = games.order_by('-release_date')
+
+    return render(request, 'core/game_list.html', {
+        'games': games,
+        'selected_genre': genre,
+        'selected_sort': sort,
+    })
 
 # страница игры
 
@@ -100,5 +116,21 @@ def edit_profile_view(request):
 
 @login_required
 def my_games_view(request):
-    my_games = Game.objects.filter(owner=request.user)
-    return render(request, 'core/my_games.html', {'my_games': my_games})
+    genre = request.GET.get('genre')
+    sort = request.GET.get('sort')
+
+    games = Game.objects.filter(owner=request.user)
+
+    if genre:
+        games = games.filter(genre=genre)
+
+    if sort == 'title':
+        games = games.order_by('title')
+    elif sort == 'date':
+        games = games.order_by('-release_date')
+
+    return render(request, 'core/my_games.html', {
+        'my_games': games,
+        'selected_genre': genre,
+        'selected_sort': sort,
+    })

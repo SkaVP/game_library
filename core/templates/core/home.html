@@ -20,8 +20,19 @@
                     <h5 class="card-title">{{ game.title }}</h5>
                     <p class="card-text mb-1"><strong>Жанр:</strong> {{ game.genre }}</p>
                     <p class="card-text mb-2"><strong>Дата релиза:</strong> {{ game.release_date }}</p>
-                    <div class="mt-auto">
+
+                    <div class="text-warning mb-2">
+                        {% for i in "12345" %}
+                            {% if game.rating|floatformat:0 >= i|add:"0" %}
+                                ★
+                            {% else %}
+                                ☆
+                            {% endif %}
+                        {% endfor %}
+                        <span class="text-muted ms-2">{{ game.rating|floatformat:1 }}/5</span>
                     </div>
+
+                    <div class="mt-auto"></div>
                 </div>
             </div>
         </div>

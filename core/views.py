@@ -3,7 +3,7 @@ from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.db.models import Q
-from .models import Game
+from .models import Game, GameRating
 from .forms import RegisterForm, GameForm, ProfileForm
 
 # регистрация
@@ -74,9 +74,32 @@ def game_list_view(request):
 
 # страница игры
 
-def game_detail_view(request, game_id):
-    game = get_object_or_404(Game, id=game_id)
-    return render(request, 'core/game_detail.html', {'game': game})
+def game_detail_view(request, pk):
+    game = get_object_or_404(Game, pk=pk)
+
+    if request.method == 'POST' and 'rating' in request.POST:
+        value = int(request.POST['rating'])
+        rating_obj, created = GameRating.objects.update_or_create(
+            game=game, user=request.user,
+            defaults={'value': value}
+        )
+        # Обновим средний рейтинг
+        ratings = game.ratings.all()
+        game.rating = sum(r.value for r in ratings) / ratings.count()
+        game.save()
+        return redirect('game_detail', pk=pk)
+
+    user_rating = None
+    if request.user.is_authenticated:
+        try:
+            user_rating = GameRating.objects.get(game=game, user=request.user).value
+        except GameRating.DoesNotExist:
+            pass
+
+    return render(request, 'core/game_detail.html', {
+        'game': game,
+        'user_rating': user_rating,
+    })
 
 # редактирование игры
 

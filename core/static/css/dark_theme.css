@@ -110,3 +110,8 @@ body {
 .theme-icon.spin {
     transform: rotate(360deg);
 }
+
+/* Адаптация текста */
+.text-body {
+    color: #f0f0f0 !important;
+}

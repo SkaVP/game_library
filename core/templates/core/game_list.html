@@ -47,6 +47,7 @@
                                 <p class="card-text">{{ game.description|truncatechars:120 }}</p>
                                 <p class="text-muted">Жанр: {{ game.genre }}</p>
                                 <p class="text-muted">Дата релиза: {{ game.release_date }}</p>
+                                <p class="text-muted">⭐ Рейтинг: {{ game.rating|floatformat:1 }}/5</p>
                             </div>
                         </div>
                     </a>

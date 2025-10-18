@@ -10,14 +10,17 @@ class RegisterForm(UserCreationForm):
         model = User
         fields = ['username', 'email', 'password1', 'password2']
 
-# добавление игры + обложка
+# добавление игры
 
 class GameForm(forms.ModelForm):
     class Meta:
         model = Game
         fields = ['title', 'description', 'genre', 'release_date', 'cover']
         widgets = {
-            'genre': forms.Select(attrs={'class': 'form-select'}),
+            'release_date': forms.DateInput(attrs={
+                'type': 'date',
+                'class': 'form-control'
+            }),
         }
 
 

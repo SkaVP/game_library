@@ -5,6 +5,12 @@
 <div class="container mt-4">
     <h2 class="mb-4 text-white">🎮 Мои игры</h2>
 
+    <div class="mb-3 text-end">
+        <a href="{% url 'add_game' %}" class="btn btn-success">
+            ➕ Добавить игру
+        </a>
+    </div>
+
     <form method="get" class="row g-3 mb-4">
         <div class="col-md-4">
             <input type="text" name="q" value="{{ search_query|default:'' }}" class="form-control text-white bg-dark border-secondary" placeholder="🔍 Поиск по названию или описанию">
@@ -55,7 +61,7 @@
             {% endfor %}
         </div>
     {% else %}
-        <p class="text-muted">Вы ещё не добавили ни одной игры.</p>
+        <p class="text-muted text-body">Вы ещё не добавили ни одной игры.</p>
     {% endif %}
 </div>
 {% endblock %}

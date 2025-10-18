@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.db.models import Q
 from .models import Game
 from .forms import RegisterForm, GameForm, ProfileForm
 
@@ -47,8 +48,14 @@ def add_game_view(request):
 def game_list_view(request):
     genre = request.GET.get('genre')
     sort = request.GET.get('sort')
+    query = request.GET.get('q')
 
     games = Game.objects.all()
+
+    if query:
+        games = games.filter(
+            Q(title__icontains=query) | Q(description__icontains=query)
+        )
 
     if genre:
         games = games.filter(genre=genre)
@@ -62,6 +69,7 @@ def game_list_view(request):
         'games': games,
         'selected_genre': genre,
         'selected_sort': sort,
+        'search_query': query,
     })
 
 # страница игры
@@ -118,19 +126,27 @@ def edit_profile_view(request):
 def my_games_view(request):
     genre = request.GET.get('genre')
     sort = request.GET.get('sort')
+    query = request.GET.get('q')
 
     games = Game.objects.filter(owner=request.user)
+
+    if query:
+        games = games.filter(
+            Q(title__icontains=query) | Q(description__icontains=query)
+        )
 
     if genre:
         games = games.filter(genre=genre)
 
-    if sort == 'title':
-        games = games.order_by('title')
-    elif sort == 'date':
+    if sort == 'date':
         games = games.order_by('-release_date')
+    else:
+        games = games.order_by('title')
 
     return render(request, 'core/my_games.html', {
         'my_games': games,
         'selected_genre': genre,
         'selected_sort': sort,
+        'search_query': query,
     })
+

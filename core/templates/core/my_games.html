@@ -3,11 +3,15 @@
 
 {% block content %}
 <div class="container mt-4">
-    <h2 class="mb-4">🎮 Мои игры</h2>
+    <h2 class="mb-4 text-white">🎮 Мои игры</h2>
 
     <form method="get" class="row g-3 mb-4">
-        <div class="col-md-6">
-            <select name="genre" class="form-select" onchange="this.form.submit()">
+        <div class="col-md-4">
+            <input type="text" name="q" value="{{ search_query|default:'' }}" class="form-control text-white bg-dark border-secondary" placeholder="🔍 Поиск по названию или описанию">
+        </div>
+
+        <div class="col-md-4">
+            <select name="genre" class="form-select text-white bg-dark border-secondary" onchange="this.form.submit()">
                 <option value="">Все жанры</option>
                 <option value="RPG" {% if selected_genre == 'RPG' %}selected{% endif %}>RPG</option>
                 <option value="Shooter" {% if selected_genre == 'Shooter' %}selected{% endif %}>Шутер</option>
@@ -20,8 +24,8 @@
             </select>
         </div>
 
-        <div class="col-md-6">
-            <select name="sort" class="form-select" onchange="this.form.submit()">
+        <div class="col-md-4">
+            <select name="sort" class="form-select text-white bg-dark border-secondary" onchange="this.form.submit()">
                 <option value="">Без сортировки</option>
                 <option value="title" {% if selected_sort == 'title' %}selected{% endif %}>По названию</option>
                 <option value="date" {% if selected_sort == 'date' %}selected{% endif %}>По дате релиза</option>
@@ -34,7 +38,7 @@
             {% for game in my_games %}
                 <div class="col">
                     <a href="{% url 'game_detail' game.pk %}" class="text-decoration-none text-reset">
-                        <div class="card h-100 shadow-sm">
+                        <div class="card h-100 shadow-sm bg-dark text-white border-secondary">
                             {% if game.cover %}
                                 <img src="{{ game.cover.url }}" class="card-img-top" alt="{{ game.title }}">
                             {% endif %}

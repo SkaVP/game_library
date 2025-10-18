@@ -19,6 +19,9 @@ class Game(models.Model):
     release_date = models.DateField()
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='games')
     cover = models.ImageField(upload_to='covers/', blank=True, null=True)
+    
+    class Meta:
+        ordering = ['title']
 
     def __str__(self):
         return self.title

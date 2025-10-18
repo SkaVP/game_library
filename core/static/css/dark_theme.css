@@ -56,19 +56,22 @@ body {
 
 /* Формы */
 .form-label {
-    color: #cccccc;
+    color: #cccccc !important;
 }
 .form-control {
     background-color: #2a2a2a;
-    color: #f0f0f0;
+    color: #f0f0f0 !important;
     border: 1px solid #555;
 }
 .form-control::placeholder {
-    color: #888;
+    color: #888 !important;
 }
 .form-control:focus {
     border-color: #00ffcc;
     box-shadow: 0 0 0 0.2rem rgba(0, 255, 204, 0.25);
+}
+.form-text {
+    color: #aaaaaa !important;
 }
 
 /* Кнопки */
@@ -115,3 +118,4 @@ body {
 .text-body {
     color: #f0f0f0 !important;
 }
+

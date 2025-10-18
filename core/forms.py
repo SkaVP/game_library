@@ -16,6 +16,10 @@ class GameForm(forms.ModelForm):
     class Meta:
         model = Game
         fields = ['title', 'description', 'genre', 'release_date', 'cover']
+        widgets = {
+            'genre': forms.Select(attrs={'class': 'form-select'}),
+        }
+
 
 # редактирование профиля
 
